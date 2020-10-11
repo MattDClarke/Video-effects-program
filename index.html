@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Video Effects Program</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="photobooth">
+    <div class="controls">
+      <button class="take-photo">Take Photo</button>
+
+
+      <label for="face-censor">
+        Face censor
+        <input disabled value="1" type="checkbox" name="face-censor">
+      </label>
+
+      <div class="file-upload">
+        <input type="file" id="fileElem" accept="image/*" style="display:none">
+        <a href="#" id="fileSelect">Select an image on your pc</a>
+        <div id="fileDisplay">
+          <p>No Image selected!</p>
+        </div>
+      </div>
+
+      <div class="face-controls">
+        <label for="size">
+          Size
+          <input value="1" type="range" name="size" min="0.8" max="1.5" step="0.1">
+        </label>
+        <label for="faceWidth">
+          Face Width
+          <input value="1" type="range" name="faceWidth" min="0.25" max="2" step="0.25">
+        </label>
+        <label for="faceHeight">
+          Face Height
+          <input value="1" type="range" name="faceHeight" min="0.8" max="2" step="0.25">
+        </label>
+      </div>
+
+      <p>Video effects</p>
+      <div class="video-effects">
+        <label for="none">
+          None
+          <input type="radio" id="none" name="imageEffects" value="none" checked>
+        </label>
+        <label for="red-effect">
+          Red Effect
+          <input type="radio" id="red-effect" name="imageEffects" value="redEffect">
+        </label>
+        <label for="green-effect">
+          Green Effect
+          <input type="radio" id="green-effect" name="imageEffects" value="greenEffect">
+        </label>
+        <label for="blue-effect">
+          Blue Effect
+          <input type="radio" id="blue-effect" name="imageEffects" value="blueEffect">
+        </label>
+        <label for="rgb-split">
+          Rgb Spit
+          <input type="radio" id="rgb-split" name="imageEffects" value="rgbSplit">
+        </label>
+        <label for="green-screen">
+          Green Screen
+          <input type="radio" id="green-screen" name="imageEffects" value="greenScreen">
+        </label>
+        <label for="frame_opacity">
+          Ghost Effect
+          <input type="range" name="frameOpacity" value="1" min="0.1" max="1" step="0.1">
+        </label>
+      </div>
+
+      <div class="rgb">
+        <label for="rmin">Red Min:</label>
+        <input type="range" min=0 max=255 name="rmin" value="0">
+        <label for="rmax">Red Max:</label>
+        <input type="range" min=0 max=255 name="rmax" value="60">
+
+        <br>
+
+        <label for="gmin">Green Min:</label>
+        <input type="range" min=0 max=255 name="gmin" value="0">
+        <label for="gmax">Green Max:</label>
+        <input type="range" min=0 max=255 name="gmax" value="126">
+
+        <br>
+
+        <label for="bmin">Blue Min:</label>
+        <input type="range" min=0 max=255 name="bmin" value="0">
+        <label for="bmax">Blue Max:</label>
+        <input type="range" min=0 max=255 name="bmax" value="255">
+      </div>
+
+    </div>
+
+    <div class="wrap">
+      <canvas class="photo"></canvas>
+      <video class="player"></video>
+    </div>
+    <div class="strip"></div>
+  </div>
+
+  <audio class="snap" src="./snap.mp3" hidden></audio>
+
+  <script src="webcam.js" type="module"></script>
+
+</body>
+
+</html>
