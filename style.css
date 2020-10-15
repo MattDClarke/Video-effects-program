@@ -1,3 +1,13 @@
+:root {
+  --purple: #8e62ff;
+  --lightBlue: #62a6ff;
+  --offWhite: #f6f6f6;
+  --darkOrange: #ff633c;
+  --lightOrange:  #ff943c;
+  --peach: #f8b37b;
+  --darkPurple: #723df7; 
+}
+
 html {
   box-sizing: border-box;
 }
@@ -7,37 +17,147 @@ html {
 }
 
 html {
-  font-size: 10px;
-  background: #ffc600;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+}
+
+body { 
+  margin: 0;
+}
+
+body::-webkit-scrollbar {
+    width: 16px
+}
+body::-webkit-scrollbar-track {
+    background: #000
+}
+body::-webkit-scrollbar-thumb {
+    background-color: var(--purple);
+    border-radius: 6px
+}
+
+.main-header {
+ background-color: var(--offWhite);
+ font-size: 3rem;
+ transition: all 0.5s;
+}
+
+h1, h2 {
+   font-weight: 900;
+   font-style: italic;
+  text-align: center;
+  margin: 0;
+  padding: 2rem;
 }
 
 .photobooth {
-  background: white;
+  background-color: var(--offWhite);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='199' viewBox='0 0 100 199'%3E%3Cg fill='%23f8b37b' fill-opacity='0.4'%3E%3Cpath d='M0 199V0h1v1.99L100 199h-1.12L1 4.22V199H0zM100 2h-.12l-1-2H100v2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
   max-width: 150rem;
-  margin: 2rem auto;
+  margin: 0 auto;
   border-radius: 2px;
 }
 
-/* moves border edge of photobooth below canvas (float: left) */
-/*clearfix*/
-.photobooth:after {
-  content: '';
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--lightOrange);
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+.controls div {
+  border: 1px solid var(--peach);
+  border-radius: 5px;
+  flex: 1;
+  padding: 1rem;
+}
+
+#video-effects-header {
+  font-weight: 900;
+  padding-top: 1.35rem;
+  padding-bottom: 0.93rem; 
+}
+
+.face-censor-label div {
+  font-weight: 900;
+}
+
+#fileSelect {
+  white-space: nowrap;
+}
+
+.green-screen-radioBtn {
+  font-weight: 900;
+}
+
+.frameOpacity-label {
+  padding-top: 1.7rem;
+}
+
+
+.take-photo {
   display: block;
-  clear: both;
+  padding: 0.5rem;
+  font-size: 1.8rem;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: var(--darkPurple);
+  color: rgb(226, 226, 226);
+  margin: 1rem auto;
 }
 
-.rgb, .face-detection-range-controls, .file-upload {
-  display: none;
+.take-photo:hover {
+  cursor: pointer;
+  background: var(--purple);
+  box-shadow: 4px 5px 4px 2px rgba(0,0,0,0.1);
+  transform: scale(1.05);
+  transition: all 0.5s;
+}
+
+.face-censor-label {
+  display: block;
+}
+
+.file-upload {
+  text-align: center;
+}
+
+#fileDisplay {
+  min-height: 98px;
+}
+
+.face-controls, .video-effects, .rgb {
+  display: flex;
+  flex-direction: column; 
+}
+
+.video-effects label {
+  margin: 0.61rem 0;
 }
 
 
+/* Hide these controls until user can use them */
+.face-controls, .rgb, .file-upload, .strip-heading {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.face-controls.open, .rgb.open, .file-upload.open, .strip-heading.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.rgb.open {
+  padding: 0.4rem 1rem;
+}
 
 .wrap {
   position: relative;
-  min-height: 100vh;
   display: grid;
   justify-content: center;
-  align-items: center;
 }
 
 .wrap>* {
@@ -45,7 +165,6 @@ html {
   grid-row: 1;
   background-color: black;
 }
-
 
 .face {
   position: absolute;
@@ -55,33 +174,224 @@ html {
   z-index:1;
 }
 
-/* .player {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width:200px;
-} */
+.player {
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
 
-/*
-  Strip!
-*/
+
+/********************* strip *********************/
+
 
 .strip {
+  min-height: 332px;
   padding: 2rem;
+  width: 100%;
+  overflow-x: scroll;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+  transform: scale(0.98);
+  will-change: transform;
+  position: relative;
+  background: rgba(255,255,255,0.1);
+  font-size: 0;
+  perspective: 500px;
+}
+
+.strip::-webkit-scrollbar {
+    width: 16px
+}
+.strip::-webkit-scrollbar-track {
+    background: #000
+}
+.strip::-webkit-scrollbar-thumb {
+    background-color:#62ffbb;
+    border-radius: 6px
+}
+
+.strip.active {
+  background: rgba(255,255,255,0.3);
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  transform: scale(1);
 }
 
 .strip img {
   width: 200px;
-  overflow-x: scroll;
-  padding: 0.8rem 0.8rem 2.5rem 0.8rem;
-  box-shadow: 0 0 3px rgba(0,0,0,0.2);
-  background: white;
+  padding: 1rem;
+  box-shadow: 0 0 3px rgba(0,0,0,0.4);
 }
 
 /* n index starts at 0 */
-.strip a:nth-child(5n+1) img { transform: rotate(5deg); }
-.strip a:nth-child(5n+2) img { transform: rotate(-3deg); }
-.strip a:nth-child(5n+3) img { transform: rotate(7deg); }
-.strip a:nth-child(5n+4) img { transform: rotate(-6deg); }
-.strip a:nth-child(5n+5) img { transform: rotate(8deg); }
+.strip a:nth-child(5n+1) img { transform: rotate(5deg); background: var(--lightBlue);}
+.strip a:nth-child(5n+2) img { transform: rotate(-3deg); background:var(--lightOrange);}
+.strip a:nth-child(5n+3) img { transform: rotate(7deg); background: #62ffbb;}
+.strip a:nth-child(5n+4) img { transform: rotate(-6deg); background: var(--darkOrange);}
+.strip a:nth-child(5n+5) img { transform: rotate(8deg); background: var(--purple);}
 
+.strip a:nth-child(even) img { transform: scaleX(1.) rotateY(10deg); }
+.strip a:nth-child(odd) img { transform: scaleX(0.95) rotateY(-10deg); }
+
+
+/********************* styling range inputs *********************/
+/* make range inputs unstyled in all browsers */ 
+/* add custom styles */
+input[type=range] {
+-webkit-appearance: none;
+margin: 18px 0;
+/* width: 90%; */
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+/* width: 100%; */
+height: 8.4px;
+cursor: pointer;
+box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
+background: var(--lightBlue);
+border-radius: 1.3px;
+border: 0.2px solid #010101;
+}
+input[type=range]::-webkit-slider-thumb {
+box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+border: 1px solid #000000;
+height: 36px;
+width: 16px;
+border-radius: 3px;
+background: #ffffff;
+cursor: pointer;
+-webkit-appearance: none;
+margin-top: -14px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+background: var(--purple);
+}
+input[type=range]::-moz-range-track {
+height: 8.4px;
+cursor: pointer;
+box-shadow: 2px 3px 3px rgba(0,0,0,0.3);
+background: var(--lightBlue);
+border-radius: 1.3px;
+border: 0.2px solid #010101;
+}
+input[type=range]::-moz-range-thumb {
+box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+border: 1px solid #000000;
+height: 36px;
+width: 16px;
+border-radius: 3px;
+background: #ffffff;
+cursor: pointer;
+}
+input[type=range]::-ms-track {
+height: 8.4px;
+cursor: pointer;
+background: transparent;
+border-color: transparent;
+border-width: 16px 0;
+color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+background: #2a6495;
+border: 0.2px solid #010101;
+border-radius: 2.6px;
+box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type=range]::-ms-fill-upper {
+background: var(--lightBlue);
+border: 0.2px solid #010101;
+border-radius: 2.6px;
+box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type=range]::-ms-thumb {
+box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+border: 1px solid #000000;
+height: 36px;
+width: 16px;
+border-radius: 3px;
+background: #ffffff;
+cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+background: var(--lightBlue);
+}
+input[type=range]:focus::-ms-fill-upper {
+background: var(--purple);
+}
+
+
+/********************* styling checkbox *********************/
+
+
+label span, .face-censor-label div {
+  cursor: pointer;
+}
+
+label > input[type="checkbox"] {
+  display: none;
+}
+
+label > input[type="checkbox"] + *::before {
+  cursor: pointer;
+  transition: all 0.5s ease-out;
+}
+
+label > input[type="checkbox"] + *::before {
+  content: "";
+  display: inline-block;
+  vertical-align: bottom;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding-bottom: 10px;
+  margin-right: 0.3rem;
+  border-radius: 10%;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: gray;
+  
+}
+label > input[type="checkbox"]:checked + * {
+  color: black;
+}
+
+label > input[type="checkbox"] + * {
+  transition: all 1s ease-out;
+}
+
+label > input[type="checkbox"]:checked + *::before {
+  content: "✓";
+  color: black;
+  text-align: center;
+  background:var(--lightBlue);
+}
+
+
+/********************* styling radio buttons *********************/
+
+
+label > input[type="radio"] {
+  display: none;
+}
+label > input[type="radio"] + *::before {
+  content: "";
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: bottom;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.3rem;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: gray;
+  transition: all 0.5s ease-out;
+}
+label > input[type="radio"]:checked + * {
+  color: black;
+}
+label > input[type="radio"]:checked + *::before {
+  background: var(--lightBlue);
+  border-color: black;
+}

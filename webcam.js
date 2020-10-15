@@ -7,6 +7,9 @@ import {
   optionsInputsFaceCensor,
   inputVideoEffect,
   opacityEffect,
+  strip,
+  stripHeading,
+  mainHeader,
 } from './lib/elements';
 
 import {
@@ -17,6 +20,12 @@ import {
   handleOpacity,
   handleCensorOptions,
   handleVideoEffect,
+  handleResize,
+  handleScrollStart,
+  handleScroll,
+  handleScrollStop,
+  shadow,
+  shadowRemove,
 } from './lib/handlers';
 
 function getVideo() {
@@ -38,10 +47,22 @@ function getVideo() {
 
 getVideo();
 
+mainHeader.addEventListener('mousemove', shadow);
+mainHeader.addEventListener('mouseleave', shadowRemove);
 takePhotoBtn.addEventListener('click', takePhoto);
+takePhotoBtn.addEventListener(
+  'click',
+  () => {
+    stripHeading.classList.add('open');
+  },
+  { once: true }
+);
+
 video.addEventListener('canplay', paintToCanvas);
+video.addEventListener('canplay', handleResize);
 video.addEventListener('canplay', () => {
   faceCensor.disabled = false;
+  takePhotoBtn.disabled = false;
 });
 
 fileSelect.addEventListener(
@@ -56,9 +77,7 @@ fileSelect.addEventListener(
 );
 
 fileElem.addEventListener('change', handleFiles, false);
-
 faceCensor.addEventListener('click', handleCensorCheckbox);
-
 optionsInputsFaceCensor.forEach(input =>
   input.addEventListener('input', handleCensorOptions)
 );
@@ -66,5 +85,11 @@ optionsInputsFaceCensor.forEach(input =>
 inputVideoEffect.forEach(input =>
   input.addEventListener('input', handleVideoEffect)
 );
-
 opacityEffect.addEventListener('input', handleOpacity);
+
+strip.addEventListener('mousedown', handleScrollStart);
+strip.addEventListener('mousemove', handleScroll);
+strip.addEventListener('mouseup', handleScrollStop);
+strip.addEventListener('mouseleave', handleScrollStop);
+
+window.addEventListener('resize', handleResize);
